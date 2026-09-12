@@ -1,9 +1,9 @@
 # keeper-bank-nis2-db
 Progettazione di una base dati PostgreSQL per la gestione degli asset informatici in ambito NIS2/ACN
 
-================================================================================
+################################################################################
 DOCUMENTAZIONE TECNICA: NORMALIZZAZIONE, TRADE-OFF E DEPLOYMENT
-================================================================================
+################################################################################
 
 1. ANALISI DI NORMALIZZAZIONE (3NF)
 --------------------------------------------------------------------------------
@@ -50,9 +50,9 @@ della Terza Forma Normale (3NF):
   preservando la continuità operativa dell'analisi NIS2/DORA.
 
 
-================================================================================
+
 3. ISTRUZIONI PER IL DEPLOYMENT E SEQUENZA DEGLI SCRIPT
-================================================================================
+--------------------------------------------------------------------------------
 
 - Dipendenze Database:
   * Motore DB: PostgreSQL (versione 14 o superiore).
@@ -69,4 +69,4 @@ della Terza Forma Normale (3NF):
   5. CREATE_VIEW_4_CSV.sql         (Creazione vista per export ACN)
   6. SELECT_ACN.sql                (Query di reporting e verifica NIS2)
   7. TEST_VERSIONAMENTO.sql        (Test di modifica asset e verifica trigger)
-================================================================================
+################################################################################
