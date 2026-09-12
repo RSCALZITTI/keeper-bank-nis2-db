@@ -2,7 +2,8 @@
 Progettazione di una base dati PostgreSQL per la gestione degli asset informatici in ambito NIS2/ACN
 
 ################################################################################
-DOCUMENTAZIONE TECNICA: NORMALIZZAZIONE, TRADE-OFF E DEPLOYMENT
+DOCUMENTAZIONE TECNICA: 
+NORMALIZZAZIONE, TRADE-OFF E DEPLOYMENT
 ################################################################################
 
 1. ANALISI DI NORMALIZZAZIONE (3NF)
