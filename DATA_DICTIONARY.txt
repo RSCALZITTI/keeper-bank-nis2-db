@@ -1,0 +1,106 @@
+================================================================================
+DATA DICTIONARY - DATABASE KEEPER BANK S.P.A. (COMPLIANCE NIS2 / DORA / ACN)
+================================================================================
+
+1. TABELLA: organizzazioni
+--------------------------------------------------------------------------------
+Descrizione: Contiene le anagrafiche dei soggetti giuridici regolamentati NIS2.
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_organizzazione   SERIAL          PK, NOT NULL       Identificativo univoco progressivo dell'organizzazione.
+ragione_sociale     VARCHAR(150)    NOT NULL           Denominazione sociale dell'entità.
+partita_iva         VARCHAR(16)     UNIQUE, NOT NULL   Partita IVA / Codice Fiscale societario.
+settore             VARCHAR(50)     NOT NULL           Settore merceologico (es. Bancario).
+tipologia_nis2      VARCHAR(20)     CHECK, NOT NULL    Classificazione NIS2 ('Essenziale', 'Importante').
+referente_acn_email VARCHAR(100)    NOT NULL           Indirizzo email di contatto per notifiche incidenti ACN.
+
+
+2. TABELLA: responsabili
+--------------------------------------------------------------------------------
+Descrizione: Anagrafica del personale interno referente per i servizi e gli asset.
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_responsabile     SERIAL          PK, NOT NULL       Identificativo univoco progressivo del referente.
+nome                VARCHAR(50)     NOT NULL           Nome del referente.
+cognome             VARCHAR(50)     NOT NULL           Cognome del referente.
+email               VARCHAR(100)    UNIQUE, NOT NULL   Email aziendale univoca.
+telefono            VARCHAR(20)     NULL               Recapito telefonico per le emergenze SOC/ACN.
+ruolo               VARCHAR(50)     NOT NULL           Ruolo organizzativo (es. CISO, Service Owner, Asset Owner).
+dipartimento        VARCHAR(50)     NOT NULL           Dipartimento aziendale di appartenenza.
+
+
+3. TABELLA: servizi
+--------------------------------------------------------------------------------
+Descrizione: Elenco dei servizi essenziali ed importanti erogati dall'organizzazione.
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_servizio         SERIAL          PK, NOT NULL       Identificativo univoco del servizio.
+codice_servizio     VARCHAR(20)     UNIQUE, NOT NULL   Codice identificativo interno (es. SE01).
+nome_servizio       VARCHAR(100)    NOT NULL           Nome del servizio erogato.
+descrizione         TEXT            NULL               Descrizione operativa delle funzionalità.
+criticita           VARCHAR(20)     CHECK, NOT NULL    Livello di criticità ('Critico', 'Alta', 'Media', 'Bassa').
+id_organizzazione   INT             FK, NOT NULL       Riferimento ad organizzazioni (ON DELETE RESTRICT).
+id_service_owner    INT             FK, NOT NULL       Riferimento al responsabile del servizio (ON DELETE RESTRICT).
+
+
+4. TABELLA: fornitori
+--------------------------------------------------------------------------------
+Descrizione: Registro dei fornitori esterni di terze parti (Supply Chain Risk).
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_fornitore        SERIAL          PK, NOT NULL       Identificativo univoco del fornitore.
+ragione_sociale     VARCHAR(150)    NOT NULL           Denominazione aziendale del fornitore.
+partita_iva         VARCHAR(20)     UNIQUE, NULL       Partita IVA / Tax ID aziendale.
+referente_contatto  VARCHAR(100)    NOT NULL           Nome e cognome del contatto di emergenza.
+email_contatto      VARCHAR(100)    NOT NULL           Email diretta per la gestione degli incidenti.
+livello_rischio_... VARCHAR(10)     CHECK, NOT NULL    Rischio supply chain ('Alto', 'Medio', 'Basso').
+
+
+5. TABELLA: asset
+--------------------------------------------------------------------------------
+Descrizione: Registro degli asset informatici (Hardware, Software, Rete, Dati).
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_asset            SERIAL          PK, NOT NULL       Identificativo univoco dell'asset.
+codice_asset        VARCHAR(30)     UNIQUE, NOT NULL   Codice univoco dell'asset (es. HW-SRV-01).
+nome_asset          VARCHAR(100)    NOT NULL           Nome identificativo del dispositivo o componente.
+tipologia           VARCHAR(30)     CHECK, NOT NULL    Categoria asset ('Hardware', 'Software', 'Rete', 'Dati').
+descrizione         TEXT            NULL               Dettagli tecnici e posizionamento.
+stato_operativo     VARCHAR(20)     CHECK, NOT NULL    Stato ('Attivo', 'In Manutenzione', 'Dismesso').
+livello_criticita   VARCHAR(20)     CHECK, NOT NULL    Livello impatto ('Critica', 'Alta', 'Media', 'Bassa').
+versione            VARCHAR(20)     DEFAULT '1.0'      Versione software/firmware corrente dell'asset.
+id_asset_owner      INT             FK, NOT NULL       Riferimento al responsabile asset (ON DELETE RESTRICT).
+id_fornitore        INT             FK, NULL           Riferimento al fornitore terzo (ON DELETE SET NULL).
+
+
+6. TABELLA: servizi_asset
+--------------------------------------------------------------------------------
+Descrizione: Tabella di giunzione N:M tra Servizi erogati e Asset informatici di supporto.
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_servizio         INT             PK, FK, NOT NULL   Riferimento a servizi (ON DELETE CASCADE).
+id_asset            INT             PK, FK, NOT NULL   Riferimento ad asset (ON DELETE CASCADE).
+data_associazione   TIMESTAMP       DEFAULT CURRENT    Data e ora di aggancio tra servizio e asset.
+
+
+7. TABELLA: log_audit_asset
+--------------------------------------------------------------------------------
+Descrizione: Registro immutabile di audit per il tracciamento delle modifiche sugli asset.
+
+CAMPO               TIPO DATO       VINCOLI            DESCRIZIONE
+--------------------------------------------------------------------------------
+id_log              SERIAL          PK, NOT NULL       Identificativo univoco della voce di audit.
+id_asset            INT             FK, NULL           Riferimento all'asset modificato (ON DELETE SET NULL).
+data_modifica       TIMESTAMP       DEFAULT CURRENT    Data e ora di esecuzione dell'operazione.
+utente_modifica     VARCHAR(50)     DEFAULT CURRENT    Utente DB o applicativo che ha eseguito la modifica.
+tipo_operazione     VARCHAR(10)     CHECK, NOT NULL    Tipo operazione ('INSERT', 'UPDATE', 'DELETE').
+stato_precedente    JSONB           NULL               Snapshot dell'intera riga prima della modifica (OLD).
+stato_nuovo         JSONB           NULL               Snapshot dell'intera riga dopo la modifica (NEW).
+
+================================================================================
