@@ -1,0 +1,75 @@
+erDiagram
+    ORGANIZZAZIONI ||--o{ SERVIZI : "eroga"
+    RESPONSABILI ||--o{ SERVIZI : "gestisce (service owner)"
+    RESPONSABILI ||--o{ ASSET : "possiede (asset owner)"
+    FORNITORI ||--o{ ASSET : "fornisce"
+    SERVIZI ||--|{ SERVIZI_ASSET : "comprende"
+    ASSET ||--|{ SERVIZI_ASSET : "supporta"
+    ASSET ||--o{ LOG_AUDIT_ASSET : "tracciato in"
+
+    ORGANIZZAZIONI {
+        serial id_organizzazione PK
+        varchar_150 ragione_sociale "NOT NULL"
+        varchar_16 partita_iva UK "NOT NULL"
+        varchar_50 settore "NOT NULL"
+        varchar_20 tipologia_nis2 "NOT NULL (CHECK)"
+        varchar_100 referente_acn_email "NOT NULL"
+    }
+
+    RESPONSABILI {
+        serial id_responsabile PK
+        varchar_50 nome "NOT NULL"
+        varchar_50 cognome "NOT NULL"
+        varchar_100 email UK "NOT NULL"
+        varchar_20 telefono "NULL"
+        varchar_50 ruolo "NOT NULL"
+        varchar_50 dipartimento "NOT NULL"
+    }
+
+    SERVIZI {
+        serial id_servizio PK
+        varchar_20 codice_servizio UK "NOT NULL"
+        varchar_100 nome_servizio "NOT NULL"
+        text descrizione "NULL"
+        varchar_20 criticita "NOT NULL (CHECK)"
+        int id_organizzazione FK "NOT NULL (RESTRICT)"
+        int id_service_owner FK "NOT NULL (RESTRICT)"
+    }
+
+    FORNITORI {
+        serial id_fornitore PK
+        varchar_150 ragione_sociale "NOT NULL"
+        varchar_20 partita_iva UK "NULL"
+        varchar_100 referente_contatto "NOT NULL"
+        varchar_100 email_contatto "NOT NULL"
+        varchar_10 livello_rischio_supply_chain "NOT NULL (CHECK)"
+    }
+
+    ASSET {
+        serial id_asset PK
+        varchar_30 codice_asset UK "NOT NULL"
+        varchar_100 nome_asset "NOT NULL"
+        varchar_30 tipologia "NOT NULL (CHECK)"
+        text descrizione "NULL"
+        varchar_20 stato_operativo "NOT NULL (CHECK)"
+        varchar_20 livello_criticita "NOT NULL (CHECK)"
+        varchar_20 versione "NOT NULL DEFAULT '1.0'"
+        int id_asset_owner FK "NOT NULL (RESTRICT)"
+        int id_fornitore FK "NULL (SET NULL)"
+    }
+
+    SERVIZI_ASSET {
+        int id_servizio PK, FK "NOT NULL (CASCADE)"
+        int id_asset PK, FK "NOT NULL (CASCADE)"
+        timestamp data_associazione "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    LOG_AUDIT_ASSET {
+        serial id_log PK
+        int id_asset FK "NULL (SET NULL)"
+        timestamp data_modifica "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+        varchar_50 utente_modifica "NOT NULL DEFAULT CURRENT_USER"
+        varchar_10 tipo_operazione "NOT NULL (CHECK)"
+        jsonb stato_precedente "NULL"
+        jsonb stato_nuovo "NULL"
+    }
