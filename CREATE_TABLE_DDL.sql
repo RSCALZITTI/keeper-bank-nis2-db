@@ -59,9 +59,9 @@ CREATE TABLE servizi_asset (
 CREATE TABLE log_audit_asset (
     id_log SERIAL PRIMARY KEY,
     id_asset INT REFERENCES asset(id_asset) ON DELETE SET NULL,
-    data_modifica TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    utente_modifica VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
-    tipo_operazione VARCHAR(10) NOT NULL CONSTRAINT chk_audit_operazione CHECK (tipo_operazione IN ('INSERT', 'UPDATE', 'DELETE')),
+    data_modifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    utente_modifica VARCHAR(50) DEFAULT CURRENT_USER NOT NULL,
+    tipo_operazione VARCHAR(10) NOT NULL CHECK (tipo_operazione IN ('INSERT', 'UPDATE', 'DELETE')),
     stato_precedente JSONB,
     stato_nuovo JSONB
 );
