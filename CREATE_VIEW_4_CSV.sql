@@ -23,7 +23,7 @@ JOIN responsabili r_asset ON a.id_asset_owner = r_asset.id_responsabile
 LEFT JOIN fornitori f ON a.id_fornitore = f.id_fornitore;
 
 -- Esportazione lato client (da eseguire tramite psql):
--- \copy (SELECT * FROM vista_export_profilo_acn) TO 'profilo_nis2_keeperbank.csv' WITH (FORMAT csv, HEADER, DELIMITER ';');
+\copy (SELECT * FROM vista_export_profilo_acn) TO 'profilo_nis2_keeperbank.csv' WITH (FORMAT csv, HEADER, DELIMITER ';');
 
 -- Interrogazione della vista per la verifica a video dei dati:
 SELECT * FROM vista_export_profilo_acn;
