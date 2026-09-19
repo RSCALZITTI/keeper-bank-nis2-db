@@ -1,0 +1,9 @@
+azienda;tipologia_nis2;codice_servizio;nome_servizio;criticita_servizio;codice_asset;nome_asset;tipologia_asset;stato_asset;versione_asset;criticita_asset;fornitore_terzo;rischio_fornitore;referente_tecnico_asset;email_referente_asset
+Keeper Bank S.p.A.;Essenziale;SE01;Home & Mobile Banking;Critico;HW-SRV-01;Cluster Server Web Banking;Hardware;In Manutenzione;2.5;Critica;Cloud Horizon S.r.l.;Alto;Laura Bianchi;l.bianchi@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE01;Home & Mobile Banking;Critico;SW-DBMS-01;PostgreSQL Cluster DB;Software;Attivo;14.2;Critica;Gestione Interna;N/A;Elena Neri;e.neri@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE01;Home & Mobile Banking;Critico;NET-FW-01;Firewall Perimetrale DMZ;Rete;Attivo;8.1;Critica;CyberGuard Solutions;Medio;Laura Bianchi;l.bianchi@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE02;Autorizzazione Pagamenti & POS;Critico;NET-FW-01;Firewall Perimetrale DMZ;Rete;Attivo;8.1;Critica;CyberGuard Solutions;Medio;Laura Bianchi;l.bianchi@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE02;Autorizzazione Pagamenti & POS;Critico;SW-API-01;API Gateway Pagamenti;Software;Attivo;3.0;Critica;SecPay Tech S.p.A.;Alto;Elena Neri;e.neri@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE03;Core Banking & Contabilità;Critico;SW-DBMS-01;PostgreSQL Cluster DB;Software;Attivo;14.2;Critica;Gestione Interna;N/A;Elena Neri;e.neri@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE03;Core Banking & Contabilità;Critico;DAT-ANAG-01;DB Anagrafica Clienti;Dati;Attivo;1.0;Critica;Gestione Interna;N/A;Elena Neri;e.neri@keeperbank.it
+Keeper Bank S.p.A.;Essenziale;SE04;Rete Interbancaria SWIFT/SEPA;Alta;HW-HSM-01;Modulo HSM Crittografico;Hardware;Attivo;1.1;Alta;Gestione Interna;N/A;Laura Bianchi;l.bianchi@keeperbank.it
